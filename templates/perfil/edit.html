@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}Editar Perfil - EcoLearn{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card border-0 shadow">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="mb-0">Editar Perfil</h3>
+                </div>
+                <div class="card-body p-4">
+                    <form method="POST">
+                        <div class="mb-3">
+                            <label for="nombre" class="form-label">Nombre Completo</label>
+                            <input type="text" class="form-control" id="nombre" name="nombre" value="{{ perfil.nombre }}" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Correo Electrónico</label>
+                            <input type="email" class="form-control" id="email" name="email" value="{{ perfil.email }}" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="biografia" class="form-label">Biografía</label>
+                            <textarea class="form-control" id="biografia" name="biografia" rows="3">{{ perfil.biografia or '' }}</textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="intereses" class="form-label">Intereses en Sostenibilidad</label>
+                            <textarea class="form-control" id="intereses" name="intereses" rows="2">{{ perfil.intereses or '' }}</textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="avatar" class="form-label">URL del Avatar</label>
+                            <input type="url" class="form-control" id="avatar" name="avatar" value="{{ perfil.avatar or '' }}" placeholder="https://ejemplo.com/avatar.jpg">
+                            <div class="form-text">Pega la URL de tu imagen de perfil (opcional)</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="nivel_sostenibilidad" class="form-label">Nivel de Sostenibilidad</label>
+                            <select class="form-select" id="nivel_sostenibilidad" name="nivel_sostenibilidad" required>
+                                <option value="Principiante" {% if perfil.nivel_sostenibilidad == 'Principiante' %}selected{% endif %}>Principiante</option>
+                                <option value="Intermedio" {% if perfil.nivel_sostenibilidad == 'Intermedio' %}selected{% endif %}>Intermedio</option>
+                                <option value="Avanzado" {% if perfil.nivel_sostenibilidad == 'Avanzado' %}selected{% endif %}>Avanzado</option>
+                                <option value="Experto" {% if perfil.nivel_sostenibilidad == 'Experto' %}selected{% endif %}>Experto</option>
+                            </select>
+                        </div>
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <a href="{{ url_for('perfil_index') }}" class="btn btn-secondary me-md-2">Cancelar</a>
+                            <button type="submit" class="btn btn-primary">Actualizar Perfil</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

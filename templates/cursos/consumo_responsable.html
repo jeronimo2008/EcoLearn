@@ -1,0 +1,208 @@
+{% extends "base.html" %}
+
+{% block title %}Curso: Consumo Responsable - EcoLearn{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <!-- Header del Curso -->
+    <div class="row mb-5">
+        <div class="col-lg-8">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{ url_for('index') }}">Inicio</a></li>
+                    <li class="breadcrumb-item"><a href="#">Cursos</a></li>
+                    <li class="breadcrumb-item active">Consumo Responsable</li>
+                </ol>
+            </nav>
+            <span class="badge bg-warning mb-2">Nivel: Intermedio</span>
+            <h1 class="display-4 fw-bold text-warning">Consumo Responsable</h1>
+            <p class="lead">Descubre cómo tomar decisiones de consumo inteligentes que beneficien al medio ambiente, la sociedad y tu economía personal.</p>
+            
+            <div class="d-flex gap-3 mb-4">
+                <div class="d-flex align-items-center">
+                    <i class="fas fa-clock text-muted me-2"></i>
+                    <span>6 semanas</span>
+                </div>
+                <div class="d-flex align-items-center">
+                    <i class="fas fa-video text-muted me-2"></i>
+                    <span>18 lecciones</span>
+                </div>
+                <div class="d-flex align-items-center">
+                    <i class="fas fa-certificate text-muted me-2"></i>
+                    <span>Certificado incluido</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="card border-0 shadow-lg">
+                <img src="{{ url_for('static', filename='img/curso-consumo.jpg') }}" class="card-img-top" alt="Consumo Responsable" width="400" height="250">
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Contenido Principal -->
+        <div class="col-lg-8">
+            <!-- Descripción del Curso -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body p-4">
+                    <h3 class="card-title h4 mb-3">🛍️ Descripción del Curso</h3>
+                    <p>Transforma tu manera de comprar y consumir. Este curso te enseñará a analizar el ciclo de vida de los productos, entender las etiquetas ecológicas y desarrollar un pensamiento crítico sobre tus hábitos de consumo.</p>
+                    
+                    <div class="row mt-4">
+                        <div class="col-md-6">
+                            <h5>🎯 Lo que lograrás:</h5>
+                            <ul>
+                                <li>Identificar greenwashing y publicidad engañosa</li>
+                                <li>Leer e interpretar certificaciones ecológicas</li>
+                                <li>Crear un presupuesto de consumo consciente</li>
+                                <li>Desarrollar criterios de compra sostenibles</li>
+                                <li>Reducir tu gasto mensual significativamente</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <h5>👥 Para quién es:</h5>
+                            <ul>
+                                <li>Consumidores que quieren hacer la diferencia</li>
+                                <li>Familias buscando ahorrar y ser sostenibles</li>
+                                <li>Estudiantes de marketing y negocios</li>
+                                <li>Emprendedores sostenibles</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contenido del Curso -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body p-4">
+                    <h3 class="card-title h4 mb-4">📊 Contenido del Curso</h3>
+                    
+                    <div class="accordion" id="cursoContenido">
+                        <!-- Módulo 1 -->
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#modulo1">
+                                    <strong>Módulo 1: Psicología del Consumo</strong>
+                                </button>
+                            </h2>
+                            <div id="modulo1" class="accordion-collapse collapse show" data-bs-parent="#cursoContenido">
+                                <div class="accordion-body">
+                                    <ul class="list-unstyled">
+                                        <li class="mb-2"><i class="fas fa-play-circle text-warning me-2"></i>Neuromarketing y consumo impulsivo</li>
+                                        <li class="mb-2"><i class="fas fa-play-circle text-warning me-2"></i>Publicidad y su impacto en decisiones</li>
+                                        <li class="mb-2"><i class="fas fa-play-circle text-warning me-2"></i>Hábitos de compra y cómo cambiarlos</li>
+                                        <li class="mb-2"><i class="fas fa-tasks text-warning me-2"></i>Actividad: Análisis de tus compras</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Módulo 2 -->
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#modulo2">
+                                    <strong>Módulo 2: Análisis de Productos</strong>
+                                </button>
+                            </h2>
+                            <div id="modulo2" class="accordion-collapse collapse" data-bs-parent="#cursoContenido">
+                                <div class="accordion-body">
+                                    <ul class="list-unstyled">
+                                        <li class="mb-2"><i class="fas fa-play-circle text-warning me-2"></i>Ciclo de vida de productos</li>
+                                        <li class="mb-2"><i class="fas fa-play-circle text-warning me-2"></i>Huella ambiental de diferentes categorías</li>
+                                        <li class="mb-2"><i class="fas fa-play-circle text-warning me-2"></i>Materiales y su impacto</li>
+                                        <li class="mb-2"><i class="fas fa-file-alt text-info me-2"></i>Quiz: Evaluación de productos</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Módulo 3 -->
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#modulo3">
+                                    <strong>Módulo 3: Certificaciones y Etiquetas</strong>
+                                </button>
+                            </h2>
+                            <div id="modulo3" class="accordion-collapse collapse" data-bs-parent="#cursoContenido">
+                                <div class="accordion-body">
+                                    <ul class="list-unstyled">
+                                        <li class="mb-2"><i class="fas fa-play-circle text-warning me-2"></i>Guía completa de certificaciones</li>
+                                        <li class="mb-2"><i class="fas fa-play-circle text-warning me-2"></i>Cómo detectar greenwashing</li>
+                                        <li class="mb-2"><i class="fas fa-play-circle text-warning me-2"></i>Certificaciones por categoría de producto</li>
+                                        <li class="mb-2"><i class="fas fa-tasks text-warning me-2"></i>Actividad: Análisis de etiquetas</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Instructor -->
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-4">
+                    <h3 class="card-title h4 mb-4">👩‍🏫 Instructora del Curso</h3>
+                    <div class="row align-items-center">
+                        <div class="col-md-3 text-center">
+                            <img src="{{ url_for('static', filename='img/instructor2.jpg') }}" alt="Dra. Ana López" class="rounded-circle mb-3" width="120" height="120">
+                        </div>
+                        <div class="col-md-9">
+                            <h5>Dra. Ana López</h5>
+                            <p class="text-muted">Especialista en consumo sostenible y economía circular. Consultora para empresas Fortune 500 en transición verde y autora del bestseller "Consumo con Conciencia".</p>
+                            <div class="d-flex gap-3">
+                                <span class="badge bg-light text-dark"><i class="fas fa-graduation-cap me-1"></i>+8,000 estudiantes</span>
+                                <span class="badge bg-light text-dark"><i class="fas fa-star me-1"></i>4.8/5 rating</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar de Compra -->
+        <div class="col-lg-4">
+            <div class="card border-0 shadow-lg sticky-top" style="top: 20px;">
+                <div class="card-body p-4">
+                    <div class="text-center mb-4">
+                        <span class="text-decoration-line-through text-muted h5">$149.00</span>
+                        <span class="h2 text-warning fw-bold ms-2">$79.00</span>
+                        <span class="badge bg-danger ms-2">47% OFF</span>
+                    </div>
+
+                    <div class="d-grid gap-2 mb-4">
+                        <a href="{{ url_for('add_to_favorites', curso_id='consumo-responsable') }}" class="btn btn-outline-danger">
+    <i class="fas fa-heart me-2"></i>Agregar a Favoritos
+</a>
+<a href="{{ url_for('add_to_cart', curso_id='consumo-responsable') }}" class="btn btn-success">
+    <i class="fas fa-cart-plus me-2"></i>Agregar al Carrito
+</a>
+                    </div>
+
+                    <div class="course-features">
+                        <h6 class="mb-3">✅ Este curso incluye:</h6>
+                        <ul class="list-unstyled">
+                            <li class="mb-2"><i class="fas fa-play-circle text-warning me-2"></i>18 lecciones en video</li>
+                            <li class="mb-2"><i class="fas fa-file-alt text-warning me-2"></i>8 recursos descargables</li>
+                            <li class="mb-2"><i class="fas fa-infinity text-warning me-2"></i>Acceso de por vida</li>
+                            <li class="mb-2"><i class="fas fa-mobile-alt text-warning me-2"></i>Acceso en app móvil</li>
+                            <li class="mb-2"><i class="fas fa-certificate text-warning me-2"></i>Certificado de finalización</li>
+                            <li class="mb-2"><i class="fas fa-users text-warning me-2"></i>Comunidad exclusiva</li>
+                        </ul>
+                    </div>
+
+                    <div class="guarantee-badge text-center mt-4">
+                        <div class="bg-light rounded p-3">
+                            <i class="fas fa-shield-alt fa-2x text-warning mb-2"></i>
+                            <h6 class="mb-1">Garantía de 30 días</h6>
+                            <small class="text-muted">Reembolso completo si no estás satisfecho</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de Pago (similar al anterior pero con precio diferente) -->
+{% endblock %}

@@ -1,0 +1,221 @@
+{% extends "base.html" %}
+
+{% block title %}Tienda Sostenible - EcoLearn{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <!-- Header -->
+    <div class="row mb-5">
+        <div class="col-lg-8">
+            <h1 class="display-4 fw-bold text-success">
+                <i class="fas fa-leaf me-3"></i>Tienda Sostenible
+            </h1>
+            <p class="lead text-muted">
+                Descubre productos ecológicos que cuidan el planeta sin comprometer calidad.
+            </p>
+        </div>
+        <div class="col-lg-4 text-lg-end">
+            
+            <div class="d-flex gap-2 justify-content-lg-end">
+                <a href="{{ url_for('favorites_productos') }}" class="btn btn-outline-danger">
+                    <i class="fas fa-heart me-2"></i>Favoritos
+                </a>
+                
+                <a href="{{ url_for('cart_productos') }}" class="btn btn-outline-success position-relative">
+                    <i class="fas fa-shopping-cart me-2"></i>Carrito
+                    {% if cart_count() > 0 %}
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                        {{ cart_count() }}
+                    </span>
+                    {% endif %}
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filtros -->
+    <div class="card border-0 shadow-sm mb-4">
+        <div class="card-body">
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <label class="form-label">Categoría</label>
+                    <select class="form-select" id="categoriaFilter">
+                        <option value="">Todas las categorías</option>
+                        {% for categoria in categorias %}
+                        <option value="{{ categoria }}">{{ categoria }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Sostenibilidad</label>
+                    <select class="form-select" id="sostenibilidadFilter">
+                        <option value="">Todos los niveles</option>
+                        <option value="Básico">Básico</option>
+                        <option value="Intermedio">Intermedio</option>
+                        <option value="Avanzado">Avanzado</option>
+                        <option value="Premium">Premium</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Precio</label>
+                    <select class="form-select" id="precioFilter">
+                        <option value="">Todos los precios</option>
+                        <option value="0-50">$0 - $50</option>
+                        <option value="50-100">$50 - $100</option>
+                        <option value="100-200">$100 - $200</option>
+                        <option value="200+">$200+</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Productos -->
+    {% if productos %}
+    <div class="row" id="productosContainer">
+        {% for producto in productos %}
+        <div class="col-lg-4 col-md-6 mb-4 producto-card"
+             data-categoria="{{ producto.categoria }}"
+             data-sostenibilidad="{{ producto.sostenibilidad }}"
+             data-precio="{{ producto.precio }}">
+            <div class="card h-100 border-0 shadow-sm producto-card-inner">
+                <div class="position-relative">
+                    <img src="{{ producto.imagen }}" class="card-img-top" alt="{{ producto.nombre }}" height="250" style="object-fit: cover;">
+                    <div class="position-absolute top-0 end-0 m-2">
+                        <span class="badge bg-{{ 'success' if producto.stock > 10 else 'warning' if producto.stock > 0 else 'danger' }}">
+                            {{ 'En stock' if producto.stock > 0 else 'Agotado' }}
+                        </span>
+                    </div>
+                    <div class="position-absolute top-0 start-0 m-2">
+                        <span class="badge bg-info">{{ producto.sostenibilidad }}</span>
+                    </div>
+                </div>
+                
+                <div class="card-body">
+                    <h5 class="card-title">{{ producto.nombre }}</h5>
+                    <p class="card-text text-muted small">{{ producto.descripcion[:100] }}...</p>
+                    
+                    <div class="producto-features mb-3">
+                        {% for caracteristica in producto.get('caracteristicas', [])[:2] %}
+                        <span class="badge bg-light text-dark border small mb-1">{{ caracteristica }}</span>
+                        {% endfor %}
+                    </div>
+                    
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="h5 text-success mb-0">${{ "%.2f"|format(producto.precio) }}</span>
+                        <small class="text-muted">{{ producto.stock }} disponibles</small>
+                    </div>
+                </div>
+                
+                <div class="card-footer bg-transparent border-0">
+                    <div class="d-grid gap-2">
+                        <a href="{{ url_for('producto_detail', producto_id=producto._id) }}" 
+                           class="btn btn-outline-success btn-sm">
+                            <i class="fas fa-eye me-2"></i>Ver Detalles
+                        </a>
+                        <div class="btn-group w-100" role="group">
+                            {% if producto.stock > 0 %}
+                            <a href="{{ url_for('add_to_cart_producto', producto_id=producto._id) }}" 
+                               class="btn btn-success btn-sm">
+                                <i class="fas fa-cart-plus me-2"></i>Carrito
+                            </a>
+                            {% else %}
+                            <button class="btn btn-secondary btn-sm disabled">
+                                <i class="fas fa-times me-2"></i>Agotado
+                            </button>
+                            {% endif %}
+                            <a href="{{ url_for('add_to_favorites_producto', producto_id=producto._id) }}" 
+                               class="btn btn-outline-danger btn-sm">
+                                <i class="fas fa-heart"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="card border-0 shadow text-center py-5">
+        <div class="card-body">
+            <i class="fas fa-store-slash fa-4x text-muted mb-3"></i>
+            <h3 class="text-muted">No hay productos disponibles</h3>
+            <p class="text-muted">Próximamente tendremos nuevos productos sostenibles.</p>
+            {% if config.DEBUG %}
+            <a href="{{ url_for('populate_productos_tienda') }}" class="btn btn-outline-success">
+                <i class="fas fa-database me-2"></i>Crear Productos de Ejemplo
+            </a>
+            {% endif %}
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<script>
+// Filtrado de productos
+document.addEventListener('DOMContentLoaded', function() {
+    const filters = {
+        categoria: document.getElementById('categoriaFilter'),
+        sostenibilidad: document.getElementById('sostenibilidadFilter'),
+        precio: document.getElementById('precioFilter')
+    };
+
+    function filterProductos() {
+        const selectedFilters = {
+            categoria: filters.categoria.value,
+            sostenibilidad: filters.sostenibilidad.value,
+            precio: filters.precio.value
+        };
+
+        document.querySelectorAll('.producto-card').forEach(card => {
+            let show = true;
+            const precio = parseFloat(card.dataset.precio);
+            
+            // Filtro por categoría
+            if (selectedFilters.categoria && card.dataset.categoria !== selectedFilters.categoria) {
+                show = false;
+            }
+            
+            // Filtro por sostenibilidad
+            if (selectedFilters.sostenibilidad && card.dataset.sostenibilidad !== selectedFilters.sostenibilidad) {
+                show = false;
+            }
+            
+            // Filtro por precio
+            if (selectedFilters.precio) {
+                const [min, max] = selectedFilters.precio.split('-').map(val => {
+                    if (val.endsWith('+')) return [parseFloat(val), Infinity];
+                    return parseFloat(val);
+                });
+                
+                if (precio < min || (max !== Infinity && precio > max)) {
+                    show = false;
+                }
+            }
+            
+            card.style.display = show ? 'block' : 'none';
+        });
+    }
+
+    // Aplicar filtros cuando cambien
+    Object.values(filters).forEach(filter => {
+        filter.addEventListener('change', filterProductos);
+    });
+});
+</script>
+
+<style>
+.producto-card-inner {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.producto-card-inner:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15) !important;
+}
+
+.card-img-top {
+    border-radius: 10px 10px 0 0;
+}
+</style>
+{% endblock %}

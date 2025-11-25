@@ -1,0 +1,173 @@
+/* Estilos personalizados para EcoLearn */
+
+:root {
+    --primary-green: #198754;
+    --secondary-blue: #0d6efd;
+    --light-green: #d1e7dd;
+    --light-blue: #cfe2ff;
+}
+
+/* Gradientes y fondos difuminados */
+.bg-gradient-primary {
+    background: linear-gradient(135deg, var(--primary-green) 0%, var(--secondary-blue) 100%);
+}
+
+.bg-gradient-light {
+    background: linear-gradient(135deg, var(--light-green) 0%, var(--light-blue) 100%);
+}
+
+/* Efectos hover para tarjetas */
+.product-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+}
+
+/* Navbar personalizada */
+.navbar-brand {
+    font-weight: 700;
+}
+
+.navbar-nav .nav-link {
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.navbar-nav .nav-link:hover {
+    color: var(--light-green) !important;
+}
+
+/* Botones personalizados */
+.btn-success {
+    background-color: var(--primary-green);
+    border-color: var(--primary-green);
+}
+
+.btn-success:hover {
+    background-color: #157347;
+    border-color: #146c43;
+}
+
+.btn-outline-success {
+    color: var(--primary-green);
+    border-color: var(--primary-green);
+}
+
+.btn-outline-success:hover {
+    background-color: var(--primary-green);
+    border-color: var(--primary-green);
+}
+
+/* Hero section */
+.hero-section {
+    background-size: cover;
+    background-position: center;
+}
+
+/* Tarjetas de cursos */
+.card {
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.card-header {
+    border-radius: 15px 15px 0 0 !important;
+}
+
+/* Badges personalizados */
+.badge {
+    font-weight: 500;
+}
+
+/* Formularios */
+.form-control:focus, .form-select:focus {
+    border-color: var(--primary-green);
+    box-shadow: 0 0 0 0.25rem rgba(25, 135, 84, 0.25);
+}
+
+/* Footer */
+footer {
+    margin-top: auto;
+}
+
+/* Responsividad para imágenes */
+.img-fluid {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Efectos de transición suaves */
+* {
+    transition: all 0.2s ease-in-out;
+}
+
+/* Estilos para alertas */
+.alert {
+    border-radius: 10px;
+    border: none;
+}
+
+/* Mejoras de espaciado */
+.container {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Mejoras de legibilidad */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: #333;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 600;
+}
+
+/* Estilos para el sistema de login */
+
+/* Gradientes para las tarjetas de beneficios */
+.bg-gradient-light {
+    background: linear-gradient(135deg, var(--light-green) 0%, var(--light-blue) 100%);
+}
+
+/* Efectos hover para tarjetas de login */
+.card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1) !important;
+}
+
+/* Estilos para los iconos de formulario */
+.input-group-text {
+    background-color: var(--light-green);
+    border-color: var(--primary-green);
+}
+
+/* Mejoras de responsive */
+@media (max-width: 768px) {
+    .card-body {
+        padding: 1.5rem !important;
+    }
+}
+
+/* Animaciones suaves */
+.btn {
+    transition: all 0.3s ease;
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+}
+
+/* Estilos para los checkboxes personalizados */
+.form-check-input:checked {
+    background-color: var(--primary-green);
+    border-color: var(--primary-green);
+}

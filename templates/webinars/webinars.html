@@ -1,0 +1,198 @@
+{% extends "base.html" %}
+
+{% block title %}Webinars en Vivo - EcoLearn{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <!-- Header -->
+    <div class="row mb-5">
+        <div class="col-lg-8">
+            <h1 class="display-4 fw-bold text-primary">
+                <i class="fas fa-video me-3"></i>Webinars en Vivo
+            </h1>
+            <p class="lead text-muted">
+                Conéctate con expertos en sostenibilidad y participa en sesiones interactivas en tiempo real.
+            </p>
+        </div>
+        <div class="col-lg-4 text-lg-end">
+            <a href="{{ url_for('my_webinars') }}" class="btn btn-outline-primary btn-lg">
+                <i class="fas fa-calendar-check me-2"></i>Mis Webinars
+            </a>
+        </div>
+    </div>
+
+    <!-- Filtros -->
+    <div class="card border-0 shadow-sm mb-4">
+        <div class="card-body">
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <label class="form-label">Categoría</label>
+                    <select class="form-select" id="categoriaFilter">
+                        <option value="">Todas las categorías</option>
+                        <option value="Energías Limpias">Energías Limpias</option>
+                        <option value="Economía Circular">Economía Circular</option>
+                        <option value="Sostenibilidad Corporativa">Sostenibilidad Corporativa</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Nivel</label>
+                    <select class="form-select" id="nivelFilter">
+                        <option value="">Todos los niveles</option>
+                        <option value="Principiante">Principiante</option>
+                        <option value="Intermedio">Intermedio</option>
+                        <option value="Avanzado">Avanzado</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Formato</label>
+                    <select class="form-select" id="formatoFilter">
+                        <option value="">Todos los formatos</option>
+                        <option value="En vivo">En vivo</option>
+                        <option value="En vivo + Q&A">En vivo + Q&A</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lista de Webinars -->
+    {% if webinars %}
+    <div class="row" id="webinarsContainer">
+        {% for webinar in webinars %}
+        <div class="col-lg-6 mb-4 webinar-card" 
+             data-categoria="{{ webinar.categoria }}"
+             data-nivel="{{ webinar.nivel }}"
+             data-formato="{{ webinar.formato }}">
+            <div class="card h-100 border-0 shadow-sm webinar-card-inner">
+                <div class="card-header bg-light border-0">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="badge bg-primary">{{ webinar.categoria }}</span>
+                        <span class="badge bg-{{ 'success' if webinar.precio == 0 else 'warning' }}">
+                            {{ 'Gratuito' if webinar.precio == 0 else '$' + webinar.precio|string }}
+                        </span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">{{ webinar.titulo }}</h5>
+                    <p class="card-text text-muted">{{ webinar.descripcion }}</p>
+                    
+                    <div class="webinar-info mb-3">
+                        <div class="row small text-muted">
+                            <div class="col-6">
+                                <i class="fas fa-calendar me-2"></i>
+                                {{ webinar.fecha_hora.strftime('%d/%m/%Y') }}
+                            </div>
+                            <div class="col-6">
+                                <i class="fas fa-clock me-2"></i>
+                                {{ webinar.fecha_hora.strftime('%H:%M') }}
+                            </div>
+                        </div>
+                        <div class="row small text-muted mt-2">
+                            <div class="col-6">
+                                <i class="fas fa-stopwatch me-2"></i>
+                                {{ webinar.duracion }} min
+                            </div>
+                            <div class="col-6">
+                                <i class="fas fa-users me-2"></i>
+                                {{ webinar.cupos_disponibles }} cupos
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="webinar-level mb-3">
+                        <span class="badge bg-secondary">{{ webinar.nivel }}</span>
+                        <span class="badge bg-info">{{ webinar.formato }}</span>
+                    </div>
+                </div>
+                <div class="card-footer bg-transparent border-0">
+                    {% if webinar._id|string in webinars_registrados %}
+                    <div class="d-grid gap-2">
+                        <span class="btn btn-success disabled">
+                            <i class="fas fa-check me-2"></i>Ya estás registrado
+                        </span>
+                        <a href="{{ url_for('webinar_detail', webinar_id=webinar._id) }}" 
+                           class="btn btn-outline-primary">
+                            Ver Detalles
+                        </a>
+                    </div>
+                    {% else %}
+                    <div class="d-grid gap-2">
+                        <a href="{{ url_for('webinar_detail', webinar_id=webinar._id) }}" 
+                           class="btn btn-primary">
+                            <i class="fas fa-info-circle me-2"></i>Ver Detalles
+                        </a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="card border-0 shadow text-center py-5">
+        <div class="card-body">
+            <i class="fas fa-video-slash fa-4x text-muted mb-3"></i>
+            <h3 class="text-muted">No hay webinars disponibles</h3>
+            <p class="text-muted">Próximamente tendremos nuevas sesiones en vivo.</p>
+            {% if config.DEBUG %}
+            <a href="{{ url_for('populate_webinars') }}" class="btn btn-outline-primary">
+                <i class="fas fa-database me-2"></i>Crear Datos de Ejemplo
+            </a>
+            {% endif %}
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<script>
+// Filtrado de webinars
+document.addEventListener('DOMContentLoaded', function() {
+    const filters = {
+        categoria: document.getElementById('categoriaFilter'),
+        nivel: document.getElementById('nivelFilter'),
+        formato: document.getElementById('formatoFilter')
+    };
+
+    function filterWebinars() {
+        const selectedFilters = {
+            categoria: filters.categoria.value,
+            nivel: filters.nivel.value,
+            formato: filters.formato.value
+        };
+
+        document.querySelectorAll('.webinar-card').forEach(card => {
+            let show = true;
+            
+            for (const [key, value] of Object.entries(selectedFilters)) {
+                if (value && card.dataset[key] !== value) {
+                    show = false;
+                    break;
+                }
+            }
+            
+            card.style.display = show ? 'block' : 'none';
+        });
+    }
+
+    // Aplicar filtros cuando cambien
+    Object.values(filters).forEach(filter => {
+        filter.addEventListener('change', filterWebinars);
+    });
+});
+</script>
+
+<style>
+.webinar-card-inner {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.webinar-card-inner:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15) !important;
+}
+
+.card-header .badge {
+    font-size: 0.75rem;
+}
+</style>
+{% endblock %}

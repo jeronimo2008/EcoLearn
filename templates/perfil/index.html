@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block title %}Mi Perfil - EcoLearn{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            {% if perfil %}
+            <div class="card border-0 shadow">
+                <div class="card-header bg-info text-white">
+                    <h3 class="mb-0">Mi Perfil</h3>
+                </div>
+                <div class="card-body p-4">
+                    <div class="row align-items-center mb-4">
+                        <div class="col-md-3 text-center">
+                            {% if perfil.avatar %}
+                            <img src="{{ perfil.avatar }}" alt="Avatar" class="img-fluid rounded-circle mb-3" width="200" height="200" id="avatar-preview">
+                            {% else %}
+                            <div class="bg-light rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3" style="width: 150px; height: 150px;">
+                                <span class="text-muted">Sin imagen</span>
+                            </div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-9">
+                            <h2 class="text-success">{{ perfil.nombre }}</h2>
+                            <p class="text-muted">{{ perfil.email }}</p>
+                            <span class="badge bg-warning text-dark">Nivel: {{ perfil.nivel_sostenibilidad }}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <h5 class="text-success">Biografía</h5>
+                        <p class="text-muted">{{ perfil.biografia or 'No hay biografía registrada' }}</p>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <h5 class="text-success">Intereses</h5>
+                        <p class="text-muted">{{ perfil.intereses or 'No hay intereses registrados' }}</p>
+                    </div>
+
+                    <!-- Nuevo apartado para modificar imagen -->
+                    <div class="mb-4">
+                        <h5 class="text-success">Modificar Imagen de Perfil</h5>
+                        <form method="POST" action="{{ url_for('perfil_update_avatar') }}" class="row g-3 align-items-end">
+                            <div class="col-md-8">
+                                <label for="nuevo_avatar" class="form-label">Nueva URL de Imagen</label>
+                                <input type="url" class="form-control" id="nuevo_avatar" name="nuevo_avatar" 
+                                       placeholder="https://ejemplo.com/nueva-imagen.jpg" required>
+                                <div class="form-text">Pega la URL de tu nueva imagen de perfil</div>
+                            </div>
+                            <div class="col-md-4">
+                                <button type="submit" class="btn btn-success w-100">Actualizar Imagen</button>
+                            </div>
+                        </form>
+                    </div>
+                    
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a href="{{ url_for('perfil_edit') }}" class="btn btn-primary">Editar Perfil Completo</a>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <div class="card border-0 shadow">
+                <div class="card-body text-center p-5">
+                    <h3 class="text-muted mb-3">No tienes un perfil creado</h3>
+                    <p class="text-muted mb-4">Crea tu perfil para personalizar tu experiencia en EcoLearn</p>
+                    <a href="{{ url_for('perfil_create') }}" class="btn btn-success btn-lg">Crear Perfil</a>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<script>
+// Vista previa de la imagen en tiempo real
+document.getElementById('nuevo_avatar').addEventListener('input', function(e) {
+    const preview = document.getElementById('avatar-preview');
+    if (preview && e.target.value) {
+        preview.src = e.target.value;
+    }
+});
+</script>
+{% endblock %}

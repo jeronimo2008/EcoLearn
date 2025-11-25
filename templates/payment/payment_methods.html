@@ -1,0 +1,132 @@
+{% extends "base.html" %}
+
+{% block title %}Métodos de Pago - EcoLearn{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <div class="col-lg-8">
+            <h1 class="text-primary mb-4"><i class="fas fa-credit-card me-2"></i>Métodos de Pago</h1>
+
+            <!-- Tarjetas Guardadas -->
+            <div class="card border-0 shadow mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0"><i class="fas fa-wallet me-2"></i>Tarjetas Guardadas</h5>
+                </div>
+                <div class="card-body">
+                    {% if tarjetas %}
+                    <div class="row">
+                        {% for tarjeta in tarjetas %}
+                        <div class="col-md-6 mb-3">
+                            <div class="card border">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-start">
+                                        <div>
+                                            <h6 class="card-title">{{ tarjeta.tipo }}</h6>
+                                            <p class="card-text mb-1">{{ tarjeta.numero_tarjeta }}</p>
+                                            <small class="text-muted">Titular: {{ tarjeta.nombre_titular }}</small><br>
+                                            <small class="text-muted">Expira: {{ tarjeta.fecha_expiracion }}</small>
+                                        </div>
+                                        <a href="{{ url_for('remove_payment_method', card_id=tarjeta._id) }}" class="btn btn-outline-danger btn-sm">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <div class="text-center py-4">
+                        <i class="fas fa-credit-card fa-3x text-muted mb-3"></i>
+                        <p class="text-muted">No tienes tarjetas guardadas</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Agregar Nueva Tarjeta -->
+            <div class="card border-0 shadow">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0"><i class="fas fa-plus-circle me-2"></i>Agregar Nueva Tarjeta</h5>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="{{ url_for('add_payment_method') }}">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="nombre_titular" class="form-label">Nombre del Titular</label>
+                                <input type="text" class="form-control" id="nombre_titular" name="nombre_titular" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="numero_tarjeta" class="form-label">Número de Tarjeta</label>
+                                <input type="text" class="form-control" id="numero_tarjeta" name="numero_tarjeta" 
+                                       placeholder="1234 5678 9012 3456" required maxlength="16">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="fecha_expiracion" class="form-label">Fecha de Expiración</label>
+                                <input type="text" class="form-control" id="fecha_expiracion" name="fecha_expiracion" 
+                                       placeholder="MM/AA" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="cvv" class="form-label">CVV</label>
+                                <input type="text" class="form-control" id="cvv" name="cvv" 
+                                       placeholder="123" required maxlength="3">
+                            </div>
+                        </div>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-success btn-lg">
+                                <i class="fas fa-save me-2"></i>Guardar Tarjeta
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar Informativo -->
+        <div class="col-lg-4">
+            <div class="card border-0 shadow sticky-top" style="top: 20px;">
+                <div class="card-body">
+                    <h6 class="card-title"><i class="fas fa-shield-alt text-success me-2"></i>Seguridad de Pagos</h6>
+                    <ul class="small text-muted">
+                        <li class="mb-2">Tus datos están encriptados</li>
+                        <li class="mb-2">No almacenamos tu CVV</li>
+                        <li class="mb-2">Pagos procesados de forma segura</li>
+                        <li class="mb-2">Certificación PCI DSS compliant</li>
+                    </ul>
+                    
+                    <hr>
+                    
+                    <h6 class="card-title"><i class="fas fa-credit-card text-primary me-2"></i>Tarjetas Aceptadas</h6>
+                    <div class="d-flex gap-2 mt-2">
+                        <span class="badge bg-primary">Visa</span>
+                        <span class="badge bg-warning text-dark">Mastercard</span>
+                        <span class="badge bg-success">American Express</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Formatear número de tarjeta
+document.getElementById('numero_tarjeta').addEventListener('input', function(e) {
+    let value = e.target.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+    let formattedValue = value.match(/.{1,4}/g)?.join(' ');
+    if (formattedValue) {
+        e.target.value = formattedValue;
+    }
+});
+
+// Formatear fecha de expiración
+document.getElementById('fecha_expiracion').addEventListener('input', function(e) {
+    let value = e.target.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+    if (value.length >= 2) {
+        e.target.value = value.substring(0, 2) + '/' + value.substring(2, 4);
+    }
+});
+</script>
+{% endblock %}

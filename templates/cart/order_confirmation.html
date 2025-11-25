@@ -1,0 +1,149 @@
+{% extends "base.html" %}
+
+{% block title %}Confirmación de Compra - EcoLearn{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <!-- Tarjeta de Confirmación -->
+            <div class="card border-0 shadow-lg text-center">
+                <div class="card-header bg-success text-white py-4">
+                    <i class="fas fa-check-circle fa-4x mb-3"></i>
+                    <h1 class="display-5 fw-bold">¡Compra Exitosa!</h1>
+                    <p class="lead mb-0">Tu pedido ha sido procesado correctamente</p>
+                </div>
+                
+                <div class="card-body p-5">
+                    <!-- Información de la Orden -->
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <h6 class="text-muted">Número de Orden</h6>
+                            <h4 class="text-primary">#{{ (orden._id|string)[-8:]|upper }}</h4>
+                        </div>
+                        <div class="col-md-6">
+                            <h6 class="text-muted">Fecha de Compra</h6>
+                            <h5>{{ orden.fecha_compra.strftime('%d/%m/%Y %H:%M') }}</h5>
+                        </div>
+                    </div>
+
+                    <!-- Resumen -->
+                    <div class="card border mb-4">
+                        <div class="card-header bg-light">
+                            <h5 class="mb-0"><i class="fas fa-list me-2"></i>Resumen de tu Compra</h5>
+                        </div>
+                        <div class="card-body">
+                            {% for item in orden.get('items', []) %}
+                            <div class="row align-items-center mb-2">
+                                <div class="col-8">
+                                    <strong>{{ item.nombre }}</strong>
+                                </div>
+                                <div class="col-4 text-end">
+                                    <span class="text-success">${{ "%.2f"|format(item.precio) }}</span>
+                                </div>
+                            </div>
+                            {% endfor %}
+                            <hr>
+                            <div class="row">
+                                <div class="col-8">
+                                    <h5>Total:</h5>
+                                </div>
+                                <div class="col-4 text-end">
+                                    <h4 class="text-success">${{ "%.2f"|format(orden.total) }}</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Información de Pago -->
+                    <div class="card border mb-4">
+                        <div class="card-header bg-light">
+                            <h5 class="mb-0"><i class="fas fa-credit-card me-2"></i>Información de Pago</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row text-start">
+                                <div class="col-md-6">
+                                    <strong>Método de Pago:</strong><br>
+                                    <span class="text-muted">{{ orden.tarjeta_usada }}</span>
+                                </div>
+                                <div class="col-md-6">
+                                    <strong>Estado:</strong><br>
+                                    <span class="badge bg-success">Completado</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Mensaje de Éxito -->
+                    <div class="alert alert-success" role="alert">
+                        <h4 class="alert-heading"><i class="fas fa-rocket me-2"></i>¡Listo para aprender!</h4>
+                        <p class="mb-0">Ya puedes acceder a tus cursos desde tu perfil. Te hemos enviado un correo de confirmación con los detalles de tu compra.</p>
+                    </div>
+
+                    <!-- Botones de Acción -->
+                    <div class="d-grid gap-2 d-md-flex justify-content-center">
+                        
+                        <a href="{{ url_for('index') }}" class="btn btn-outline-primary btn-lg">
+                            <i class="fas fa-home me-2"></i>Volver al Inicio
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Información Adicional -->
+            <div class="row mt-4">
+                <div class="col-md-4">
+                    <div class="card border-0 bg-light h-100">
+                        <div class="card-body text-center">
+                            <i class="fas fa-download fa-2x text-primary mb-3"></i>
+                            <h6>Acceso Inmediato</h6>
+                            <small class="text-muted">Disponible las 24/7</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card border-0 bg-light h-100">
+                        <div class="card-body text-center">
+                            <i class="fas fa-mobile-alt fa-2x text-success mb-3"></i>
+                            <h6>Multiplataforma</h6>
+                            <small class="text-muted">Accede desde cualquier dispositivo</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card border-0 bg-light h-100">
+                        <div class="card-body text-center">
+                            <i class="fas fa-headset fa-2x text-info mb-3"></i>
+                            <h6>Soporte</h6>
+                            <small class="text-muted">Ayuda cuando la necesites</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Script para redirección automática después de 10 segundos -->
+<script>
+// Redirigir automáticamente después de 30 segundos
+setTimeout(function() {
+    window.location.href = "{{ url_for('index') }}";
+}, 30000); // 30000 ms = 30 segundos
+
+// Opcional: Mostrar contador
+let seconds = 30;
+const countdownElement = document.createElement('div');
+countdownElement.className = 'text-center mt-3 text-muted';
+countdownElement.innerHTML = `Serás redirigido automáticamente en <span id="countdown">${seconds}</span> segundos...`;
+document.querySelector('.card-body').appendChild(countdownElement);
+
+const countdown = setInterval(function() {
+    seconds--;
+    document.getElementById('countdown').textContent = seconds;
+    if (seconds <= 0) {
+        clearInterval(countdown);
+    }
+}, 1000);
+</script>
+{% endblock %}

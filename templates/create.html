@@ -1,0 +1,20 @@
+
+{% extends "base.html" %}
+{% block title %}Nuevo{% endblock %}
+{% block content %}
+  <h2>Nuevo registro</h2>
+  <form method="post" class="mt-3">
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <label class="form-label">Campo 1 (ej. Título)</label>
+        <input class="form-control" name="campo1" required>
+      </div>
+      <div class="col-md-6 mb-3">
+        <label class="form-label">Campo 2 (ej. Descripción)</label>
+        <input class="form-control" name="campo2" required>
+      </div>
+    </div>
+    <button class="btn btn-primary">Guardar</button>
+    <a class="btn btn-secondary" href="{{ url_for('index') }}">Cancelar</a>
+  </form>
+{% endblock %}

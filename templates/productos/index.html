@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+
+{% block title %}Gestión de Productos - EcoLearn{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="text-success">Productos Sostenibles</h1>
+        <div class="d-flex gap-2">
+           
+            <a href="{{ url_for('tienda') }}" class="btn btn-primary">
+                <i class="fas fa-store me-2"></i>Ver Tienda
+            </a>
+            <a href="{{ url_for('productos_create') }}" class="btn btn-success">Agregar Producto</a>
+        </div>
+    </div>
+
+    {% if productos %}
+    <div class="row">
+        {% for producto in productos %}
+        <div class="col-md-6 col-lg-4 mb-4">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="position-relative">
+                    <img src="{{ producto.imagen }}" class="card-img-top" alt="{{ producto.nombre }}" height="200" style="object-fit: cover;">
+                    <div class="position-absolute top-0 end-0 m-2">
+                        <span class="badge bg-{{ 'success' if producto.estado == 'activo' else 'secondary' }}">
+                            {{ 'En Tienda' if producto.estado == 'activo' else 'Inactivo' }}
+                        </span>
+                    </div>
+                    <div class="position-absolute top-0 start-0 m-2">
+                        <span class="badge bg-info">{{ producto.sostenibilidad }}</span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">{{ producto.nombre }}</h5>
+                    <p class="card-text text-muted">{{ producto.descripcion[:100] }}...</p>
+                    
+                    <div class="producto-info mb-3">
+                        <div class="row small text-muted">
+                            <div class="col-6">
+                                <i class="fas fa-tag me-1"></i>
+                                {{ producto.categoria }}
+                            </div>
+                            <div class="col-6">
+                                <i class="fas fa-box me-1"></i>
+                                Stock: {{ producto.stock }}
+                            </div>
+                        </div>
+                        <div class="row small text-muted mt-1">
+                            <div class="col-6">
+                                <i class="fas fa-dollar-sign me-1"></i>
+                                ${{ "%.2f"|format(producto.precio) }}
+                            </div>
+                            <div class="col-6">
+                                <i class="fas fa-calendar me-1"></i>
+                                {{ producto.fecha_creacion.strftime('%d/%m/%Y') }}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    {% if producto.caracteristicas %}
+                    <div class="caracteristicas mb-3">
+                        {% for caracteristica in producto.caracteristicas[:2] %}
+                        <span class="badge bg-light text-dark border small mb-1">{{ caracteristica }}</span>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="card-footer bg-transparent border-0">
+                    <div class="d-grid gap-2">
+                        <a href="{{ url_for('productos_edit', id=producto._id) }}" class="btn btn-outline-primary btn-sm">Editar</a>
+                        <form method="POST" action="{{ url_for('productos_delete', id=producto._id) }}" class="d-grid">
+                            <button type="submit" class="btn btn-outline-danger btn-sm" 
+                                    onclick="return confirm('¿Estás seguro de eliminar este producto?')">
+                                Eliminar
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="card border-0 shadow text-center py-5">
+        <div class="card-body">
+            <i class="fas fa-box-open fa-4x text-muted mb-3"></i>
+            <h3 class="text-muted">No hay productos registrados</h3>
+            <p class="text-muted">Comienza agregando tu primer producto sostenible a la tienda.</p>
+            <a href="{{ url_for('productos_create') }}" class="btn btn-success">Agregar Primer Producto</a>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

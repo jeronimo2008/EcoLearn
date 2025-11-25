@@ -1,0 +1,137 @@
+{% extends "base.html" %}
+
+{% block title %}Checkout - EcoLearn{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <div class="col-lg-8">
+            <h1 class="text-success mb-4"><i class="fas fa-cash-register me-2"></i>Finalizar Compra</h1>
+
+            <!-- Resumen del Pedido -->
+            <div class="card border-0 shadow mb-4">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0"><i class="fas fa-receipt me-2"></i>Resumen de tu Pedido</h5>
+                </div>
+                <div class="card-body">
+                    {% for item in carrito %}
+                    <div class="row align-items-center mb-3 pb-3 {% if not loop.last %}border-bottom{% endif %}">
+                        <div class="col-md-2">
+                            <img src="{{ item.imagen }}" alt="{{ item.nombre }}" class="img-fluid rounded" width="60" height="45">
+                        </div>
+                        <div class="col-md-6">
+                            <h6 class="mb-1">{{ item.nombre }}</h6>
+                            <small class="text-muted">Producto</small>
+                        </div>
+                        <div class="col-md-4 text-end">
+                            <span class="text-success fw-bold">${{ "%.2f"|format(item.precio) }}</span>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    
+                    <div class="row mt-3">
+                        <div class="col-6">
+                            <strong>Subtotal:</strong>
+                        </div>
+                        <div class="col-6 text-end">
+                            <strong>${{ "%.2f"|format(total) }}</strong>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <span>Impuestos:</span>
+                        </div>
+                        <div class="col-6 text-end">
+                            <span>$0.00</span>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-6">
+                            <h5>Total:</h5>
+                        </div>
+                        <div class="col-6 text-end">
+                            <h4 class="text-success">${{ "%.2f"|format(total) }}</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Métodos de Pago -->
+            <div class="card border-0 shadow">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0"><i class="fas fa-credit-card me-2"></i>Método de Pago</h5>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="{{ url_for('process_payment') }}">
+                        {% if tarjetas %}
+                        <div class="mb-4">
+                            <h6 class="mb-3">Selecciona una tarjeta guardada:</h6>
+                            {% for tarjeta in tarjetas %}
+                            <div class="form-check mb-3">
+                                <input class="form-check-input" type="radio" name="tarjeta_id" 
+                                       id="tarjeta{{ loop.index }}" value="{{ tarjeta._id }}" required>
+                                <label class="form-check-label" for="tarjeta{{ loop.index }}">
+                                    <i class="fas fa-credit-card me-2 text-primary"></i>
+                                    <strong>{{ tarjeta.tipo }}</strong> - {{ tarjeta.numero_tarjeta }}
+                                    <br>
+                                    <small class="text-muted">Titular: {{ tarjeta.nombre_titular }} | Expira: {{ tarjeta.fecha_expiracion }}</small>
+                                </label>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% else %}
+                        <div class="alert alert-warning">
+                            <i class="fas fa-exclamation-triangle me-2"></i>
+                            No tienes tarjetas guardadas. 
+                            <a href="{{ url_for('payment_methods') }}" class="alert-link">Agrega una tarjeta primero</a>.
+                        </div>
+                        {% endif %}
+
+                        <div class="d-grid gap-2">
+                            {% if tarjetas %}
+                            <button type="submit" class="btn btn-success btn-lg">
+                                <i class="fas fa-lock me-2"></i>Pagar ${{ "%.2f"|format(total) }}
+                            </button>
+                            {% else %}
+                            <button type="button" class="btn btn-secondary btn-lg" disabled>
+                                <i class="fas fa-lock me-2"></i>Pagar ${{ "%.2f"|format(total) }}
+                            </button>
+                            {% endif %}
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="col-lg-4">
+            <div class="card border-0 shadow sticky-top" style="top: 20px;">
+                <div class="card-body">
+                    <h6 class="card-title text-success">
+                        <i class="fas fa-shield-alt me-2"></i>Compra Segura
+                    </h6>
+                    <ul class="small text-muted">
+                        <li class="mb-2">Pago 100% seguro y encriptado</li>
+                        <li class="mb-2">Protegido por SSL</li>
+                        <li class="mb-2">No almacenamos datos sensibles</li>
+                        <li class="mb-2">Garantía de devolución</li>
+                    </ul>
+                    
+                    <hr>
+                    
+                    <h6 class="card-title text-primary">
+                        <i class="fas fa-graduation-cap me-2"></i>Lo que obtienes
+                    </h6>
+                    <ul class="small text-muted">
+                        <li class="mb-2">Acceso inmediato al curso</li>
+                        <li class="mb-2">Contenido actualizado</li>
+                        <li class="mb-2">Certificado de finalización</li>
+                        <li class="mb-2">Soporte del instructor</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

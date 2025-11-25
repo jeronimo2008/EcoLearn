@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+
+{% block title %}Mis Favoritos - EcoLearn{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <h1 class="display-5 fw-bold text-danger mb-4">
+        <i class="fas fa-heart me-3"></i>Mis Favoritos
+    </h1>
+
+    <!-- Pestañas -->
+    <ul class="nav nav-tabs mb-4" id="favoritesTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="cursos-tab" data-bs-toggle="tab" data-bs-target="#cursos" type="button" role="tab">
+                <i class="fas fa-graduation-cap me-2"></i>Cursos ({{ cursos_favoritos|length }})
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="productos-tab" data-bs-toggle="tab" data-bs-target="#productos" type="button" role="tab">
+                <i class="fas fa-shopping-bag me-2"></i>Productos ({{ productos_favoritos|length }})
+            </button>
+        </li>
+    </ul>
+
+    <!-- Contenido de pestañas -->
+    <div class="tab-content" id="favoritesTabsContent">
+        
+        <!-- Pestaña de Cursos -->
+        <div class="tab-pane fade show active" id="cursos" role="tabpanel">
+            {% if cursos_favoritos %}
+            <div class="row">
+                {% for favorito in cursos_favoritos %}
+                <div class="col-lg-6 mb-4">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="row g-0">
+                            <div class="col-md-4">
+                                <img src="{{ favorito.imagen }}" class="img-fluid rounded-start h-100" alt="{{ favorito.nombre }}" style="object-fit: cover;">
+                            </div>
+                            <div class="col-md-8">
+                                <div class="card-body d-flex flex-column h-100">
+                                    <h5 class="card-title">{{ favorito.nombre }}</h5>
+                                    <p class="card-text text-muted">Curso de sostenibilidad</p>
+                                    <div class="mt-auto">
+                                        <div class="d-flex justify-content-between align-items-center mb-3">
+                                            <span class="h5 text-success mb-0">${{ "%.2f"|format(favorito.precio) }}</span>
+                                        </div>
+                                        <div class="d-grid gap-2">
+                                            <a href="{{ favorito.url }}" class="btn btn-primary btn-sm">
+                                                <i class="fas fa-play me-2"></i>Ver Curso
+                                            </a>
+                                            <a href="{{ url_for('remove_from_favorites', item_id=favorito._id) }}" 
+                                               class="btn btn-outline-danger btn-sm"
+                                               onclick="return confirm('¿Eliminar de favoritos?')">
+                                                <i class="fas fa-times me-2"></i>Quitar
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="text-center py-5">
+                <i class="fas fa-graduation-cap fa-4x text-muted mb-3"></i>
+                <h4 class="text-muted">No tienes cursos favoritos</h4>
+                <p class="text-muted">Explora nuestros cursos y agrega tus favoritos.</p>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Pestaña de Productos -->
+        <div class="tab-pane fade" id="productos" role="tabpanel">
+            {% if productos_favoritos %}
+            <div class="row">
+                {% for favorito in productos_favoritos %}
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="position-relative">
+                            <img src="{{ favorito.imagen }}" class="card-img-top" alt="{{ favorito.nombre }}" height="200" style="object-fit: cover;">
+                            <div class="position-absolute top-0 end-0 m-2">
+                                <span class="badge bg-info">{{ favorito.categoria }}</span>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">{{ favorito.nombre }}</h5>
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <span class="h5 text-success mb-0">${{ "%.2f"|format(favorito.precio) }}</span>
+                            </div>
+                        </div>
+                        <div class="card-footer bg-transparent border-0">
+                            <div class="d-grid gap-2">
+                                <a href="{{ url_for('producto_detail', producto_id=favorito.item_id) }}" 
+                                   class="btn btn-outline-success btn-sm">
+                                    <i class="fas fa-eye me-2"></i>Ver Detalles
+                                </a>
+                                <a href="{{ url_for('add_to_cart_producto', producto_id=favorito.item_id) }}" 
+                                   class="btn btn-success btn-sm">
+                                    <i class="fas fa-cart-plus me-2"></i>Carrito
+                                </a>
+                                <a href="{{ url_for('remove_from_favorites', item_id=favorito._id) }}" 
+                                   class="btn btn-outline-danger btn-sm"
+                                   onclick="return confirm('¿Eliminar de favoritos?')">
+                                    <i class="fas fa-times me-2"></i>Quitar
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="text-center py-5">
+                <i class="fas fa-shopping-bag fa-4x text-muted mb-3"></i>
+                <h4 class="text-muted">No tienes productos favoritos</h4>
+                <p class="text-muted">Explora nuestra tienda y agrega tus productos favoritos.</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

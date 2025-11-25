@@ -1,0 +1,155 @@
+{% extends "base.html" %}
+
+{% block title %}Carrito de Compras - EcoLearn{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1 class="text-success"><i class="fas fa-shopping-cart me-2"></i>Mi Carrito</h1>
+                <span class="badge bg-success fs-6">{{ carrito_items|length }} item(s)</span>
+            </div>
+
+            <!-- Pestañas -->
+            <ul class="nav nav-tabs mb-4" id="cartTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="cursos-tab" data-bs-toggle="tab" data-bs-target="#cursos" type="button" role="tab">
+                        <i class="fas fa-graduation-cap me-2"></i>Cursos ({{ cursos_carrito|length }})
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="productos-tab" data-bs-toggle="tab" data-bs-target="#productos" type="button" role="tab">
+                        <i class="fas fa-shopping-bag me-2"></i>Productos ({{ productos_carrito|length }})
+                    </button>
+                </li>
+            </ul>
+
+            <!-- Contenido de pestañas -->
+            <div class="tab-content" id="cartTabsContent">
+                
+                <!-- Pestaña de Cursos -->
+                <div class="tab-pane fade show active" id="cursos" role="tabpanel">
+                    {% if cursos_carrito %}
+                    <div class="card border-0 shadow">
+                        <div class="card-body p-0">
+                            {% for item in cursos_carrito %}
+                            <div class="p-4 border-bottom {% if not loop.last %}border-bottom{% endif %}">
+                                <div class="row align-items-center">
+                                    <div class="col-md-2">
+                                        <img src="{{ item.imagen }}" alt="{{ item.nombre }}" class="img-fluid rounded" width="80" height="60">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <h5 class="mb-1">{{ item.nombre }}</h5>
+                                        <p class="text-muted mb-0">Curso en línea</p>
+                                    </div>
+                                    <div class="col-md-2 text-center">
+                                        <span class="h5 text-success">${{ "%.2f"|format(item.precio) }}</span>
+                                    </div>
+                                    <div class="col-md-2 text-end">
+                                        <a href="{{ url_for('remove_from_cart', item_id=item._id) }}" class="btn btn-outline-danger btn-sm">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% else %}
+                    <div class="text-center py-5">
+                        <i class="fas fa-graduation-cap fa-4x text-muted mb-3"></i>
+                        <h4 class="text-muted">No tienes cursos en el carrito</h4>
+                        <p class="text-muted">Explora nuestros cursos y agrega algunos.</p>
+                    </div>
+                    {% endif %}
+                </div>
+
+                <!-- Pestaña de Productos -->
+                <div class="tab-pane fade" id="productos" role="tabpanel">
+                    {% if productos_carrito %}
+                    <div class="card border-0 shadow">
+                        <div class="card-body p-0">
+                            {% for item in productos_carrito %}
+                            <div class="p-4 border-bottom {% if not loop.last %}border-bottom{% endif %}">
+                                <div class="row align-items-center">
+                                    <div class="col-md-2">
+                                        <img src="{{ item.imagen }}" alt="{{ item.nombre }}" class="img-fluid rounded" width="80" height="60">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <h5 class="mb-1">{{ item.nombre }}</h5>
+                                        <p class="text-muted mb-0">{{ item.categoria }}</p>
+                                        <small class="text-muted">Cantidad: {{ item.cantidad }}</small>
+                                    </div>
+                                    <div class="col-md-2 text-center">
+                                        <span class="h6 text-success">${{ "%.2f"|format(item.precio) }}</span>
+                                    </div>
+                                    <div class="col-md-2 text-center">
+                                        <span class="h6">${{ "%.2f"|format(item.precio * item.cantidad) }}</span>
+                                    </div>
+                                    <div class="col-md-2 text-end">
+                                        <a href="{{ url_for('remove_from_cart', item_id=item._id) }}" class="btn btn-outline-danger btn-sm">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% else %}
+                    <div class="text-center py-5">
+                        <i class="fas fa-shopping-bag fa-4x text-muted mb-3"></i>
+                        <h4 class="text-muted">No tienes productos en el carrito</h4>
+                        <p class="text-muted">Explora nuestra tienda y agrega algunos productos.</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        {% if carrito_items %}
+        <div class="col-lg-4">
+            <div class="card border-0 shadow sticky-top" style="top: 20px;">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0"><i class="fas fa-receipt me-2"></i>Resumen de Compra</h5>
+                </div>
+                <div class="card-body">
+                    {% if cursos_carrito %}
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Cursos ({{ cursos_carrito|length }}):</span>
+                        <span>${{ "%.2f"|format(total_cursos) }}</span>
+                    </div>
+                    {% endif %}
+                    
+                    {% if productos_carrito %}
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Productos:</span>
+                        <span>${{ "%.2f"|format(total_productos) }}</span>
+                    </div>
+                    {% endif %}
+                    
+                    <hr>
+                    <div class="d-flex justify-content-between mb-4">
+                        <strong>Total:</strong>
+                        <strong class="h5 text-success">${{ "%.2f"|format(total_general) }}</strong>
+                    </div>
+                    
+                    <div class="d-grid gap-2">
+                        <a href="{{ url_for('checkout') }}" class="btn btn-success btn-lg">
+                            <i class="fas fa-lock me-2"></i>Proceder al Pago
+                        </a>
+                    </div>
+                    
+                    <div class="text-center mt-3">
+                        <small class="text-muted">
+                            <i class="fas fa-shield-alt me-1"></i>Pago 100% seguro
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

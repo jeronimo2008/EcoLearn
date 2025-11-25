@@ -1,0 +1,140 @@
+{% extends "base.html" %}
+
+{% block title %}{{ producto.nombre }} - EcoLearn{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <!-- Imágenes del Producto -->
+        <div class="col-lg-6">
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body p-4">
+                    <img src="{{ producto.imagen }}" alt="{{ producto.nombre }}" class="img-fluid rounded" style="max-height: 400px; width: 100%; object-fit: cover;">
+                </div>
+            </div>
+        </div>
+
+        <!-- Información del Producto -->
+        <div class="col-lg-6">
+            <nav aria-label="breadcrumb" class="mb-3">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{ url_for('tienda') }}">Tienda</a></li>
+                    <li class="breadcrumb-item"><a href="#">{{ producto.categoria }}</a></li>
+                    <li class="breadcrumb-item active">{{ producto.nombre }}</li>
+                </ol>
+            </nav>
+
+            <div class="d-flex flex-wrap gap-2 mb-3">
+                <span class="badge bg-success">{{ producto.categoria }}</span>
+                <span class="badge bg-info">{{ producto.sostenibilidad }}</span>
+                <span class="badge bg-{{ 'success' if producto.stock > 10 else 'warning' if producto.stock > 0 else 'danger' }}">
+                    {{ producto.stock }} disponibles
+                </span>
+            </div>
+
+            <h1 class="display-6 fw-bold text-dark mb-3">{{ producto.nombre }}</h1>
+            <p class="lead text-muted mb-4">{{ producto.descripcion }}</p>
+
+            <div class="precio-section mb-4">
+                <h2 class="text-success">${{ "%.2f"|format(producto.precio) }}</h2>
+                <small class="text-muted">Precio incluye IVA</small>
+            </div>
+
+            <!-- Características -->
+            <div class="caracteristicas mb-4">
+                <h5 class="mb-3">🌱 Características Sostenibles</h5>
+                <div class="row">
+                    {% for caracteristica in producto.caracteristicas %}
+                    <div class="col-md-6 mb-2">
+                        <i class="fas fa-check text-success me-2"></i>
+                        <small>{{ caracteristica }}</small>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Materiales -->
+            {% if producto.materiales %}
+            <div class="materiales mb-4">
+                <h5 class="mb-3">📦 Materiales</h5>
+                <div class="d-flex flex-wrap gap-2">
+                    {% for material in producto.materiales %}
+                    <span class="badge bg-light text-dark border">{{ material }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Acciones -->
+            <div class="acciones-producto">
+                {% if producto.stock > 0 %}
+                <div class="d-grid gap-2">
+                    <a href="{{ url_for('add_to_cart_producto', producto_id=producto._id) }}" 
+                       class="btn btn-success btn-lg">
+                        <i class="fas fa-cart-plus me-2"></i>Agregar al Carrito
+                    </a>
+                    <div class="btn-group w-100" role="group">
+                        <a href="{{ url_for('add_to_favorites_producto', producto_id=producto._id) }}" 
+                           class="btn btn-outline-danger">
+                            <i class="fas fa-heart me-2"></i>Agregar a Favoritos
+                        </a>
+                       <a href="{{ url_for('index') }}" class="btn btn-outline-primary">
+    Inicio
+</a>
+                    </div>
+                </div>
+                {% else %}
+                <div class="alert alert-warning text-center">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    Producto temporalmente agotado
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Información de Envío -->
+            <div class="envio-info mt-4 p-3 bg-light rounded">
+                <div class="row text-center">
+                    <div class="col-4">
+                        <i class="fas fa-shipping-fast text-success fa-lg mb-2"></i>
+                        <p class="small mb-0">Envío en 3-5 días</p>
+                    </div>
+                    <div class="col-4">
+                        <i class="fas fa-undo-alt text-success fa-lg mb-2"></i>
+                        <p class="small mb-0">Devolución gratis</p>
+                    </div>
+                    <div class="col-4">
+                        <i class="fas fa-shield-alt text-success fa-lg mb-2"></i>
+                        <p class="small mb-0">Pago seguro</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Productos Relacionados -->
+    {% if productos_relacionados %}
+    <div class="row mt-5">
+        <div class="col-12">
+            <h3 class="mb-4">Productos Relacionados</h3>
+            <div class="row">
+                {% for producto_rel in productos_relacionados %}
+                <div class="col-lg-3 col-md-4 col-6 mb-4">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <img src="{{ producto_rel.imagen }}" class="card-img-top" alt="{{ producto_rel.nombre }}" height="150" style="object-fit: cover;">
+                        <div class="card-body">
+                            <h6 class="card-title">{{ producto_rel.nombre }}</h6>
+                            <p class="card-text text-success fw-bold mb-2">${{ "%.2f"|format(producto_rel.precio) }}</p>
+                            <a href="{{ url_for('producto_detail', producto_id=producto_rel._id) }}" 
+                               class="btn btn-outline-success btn-sm w-100">
+                                Ver Detalles
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

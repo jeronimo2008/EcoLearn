@@ -1,0 +1,11 @@
+
+{% extends "base.html" %}
+{% block title %}Detalle{% endblock %}
+{% block content %}
+  <h2>Detalle</h2>
+  <ul class="list-group">
+    <li class="list-group-item"><strong>Campo 1:</strong> {{ dato.campo1 }}</li>
+    <li class="list-group-item"><strong>Campo 2:</strong> {{ dato.campo2 }}</li>
+  </ul>
+  <a class="btn btn-secondary mt-3" href="{{ url_for('index') }}">Volver</a>
+{% endblock %}

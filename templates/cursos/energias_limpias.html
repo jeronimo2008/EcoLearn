@@ -1,0 +1,209 @@
+{% extends "base.html" %}
+
+{% block title %}Curso: Energías Limpias - EcoLearn{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <!-- Header del Curso -->
+    <div class="row mb-5">
+        <div class="col-lg-8">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{ url_for('index') }}">Inicio</a></li>
+                    <li class="breadcrumb-item"><a href="#">Cursos</a></li>
+                    <li class="breadcrumb-item active">Energías Limpias</li>
+                </ol>
+            </nav>
+            <span class="badge bg-info mb-2">Nivel: Avanzado</span>
+            <h1 class="display-4 fw-bold text-info">Energías Limpias</h1>
+            <p class="lead">Conoce las diferentes fuentes de energía renovable, su implementación y cómo están transformando nuestro mundo hacia un futuro más sostenible.</p>
+            
+            <div class="d-flex gap-3 mb-4">
+                <div class="d-flex align-items-center">
+                    <i class="fas fa-clock text-muted me-2"></i>
+                    <span>8 semanas</span>
+                </div>
+                <div class="d-flex align-items-center">
+                    <i class="fas fa-video text-muted me-2"></i>
+                    <span>24 lecciones</span>
+                </div>
+                <div class="d-flex align-items-center">
+                    <i class="fas fa-certificate text-muted me-2"></i>
+                    <span>Certificado profesional</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="card border-0 shadow-lg">
+                <img src="{{ url_for('static', filename='img/curso-energias.jpg') }}" class="card-img-top" alt="Energías Limpias" width="400" height="250">
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Contenido Principal -->
+        <div class="col-lg-8">
+            <!-- Descripción del Curso -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body p-4">
+                    <h3 class="card-title h4 mb-3">⚡ Descripción del Curso</h3>
+                    <p>Profundiza en el fascinante mundo de las energías renovables. Desde los fundamentos técnicos hasta las implicaciones económicas y políticas, este curso te preparará para entender y participar en la transición energética global.</p>
+                    
+                    <div class="row mt-4">
+                        <div class="col-md-6">
+                            <h5>🎯 Lo que lograrás:</h5>
+                            <ul>
+                                <li>Comprender el funcionamiento de cada tecnología renovable</li>
+                                <li>Analizar viabilidad de proyectos energéticos</li>
+                                <li>Diseñar sistemas híbridos de energía</li>
+                                <li>Evaluar impacto ambiental de diferentes fuentes</li>
+                                <li>Desarrollar proyectos de energía comunitaria</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <h5>👥 Para quién es:</h5>
+                            <ul>
+                                <li>Ingenieros y técnicos en energía</li>
+                                <li>Estudiantes de ciencias ambientales</li>
+                                <li>Inversionistas en proyectos verdes</li>
+                                <li>Activistas y policymakers</li>
+                                <li>Propietarios interesados en energías renovables</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contenido del Curso -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body p-4">
+                    <h3 class="card-title h4 mb-4">🌞 Contenido del Curso</h3>
+                    
+                    <div class="accordion" id="cursoContenido">
+                        <!-- Módulo 1 -->
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#modulo1">
+                                    <strong>Módulo 1: Fundamentos Energéticos</strong>
+                                </button>
+                            </h2>
+                            <div id="modulo1" class="accordion-collapse collapse show" data-bs-parent="#cursoContenido">
+                                <div class="accordion-body">
+                                    <ul class="list-unstyled">
+                                        <li class="mb-2"><i class="fas fa-play-circle text-info me-2"></i>Física de la energía y potencia</li>
+                                        <li class="mb-2"><i class="fas fa-play-circle text-info me-2"></i>Sistemas de generación y distribución</li>
+                                        <li class="mb-2"><i class="fas fa-play-circle text-info me-2"></i>Almacenamiento energético</li>
+                                        <li class="mb-2"><i class="fas fa-file-alt text-info me-2"></i>Quiz: Conceptos fundamentales</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Módulo 2 -->
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#modulo2">
+                                    <strong>Módulo 2: Tecnologías Específicas</strong>
+                                </button>
+                            </h2>
+                            <div id="modulo2" class="accordion-collapse collapse" data-bs-parent="#cursoContenido">
+                                <div class="accordion-body">
+                                    <ul class="list-unstyled">
+                                        <li class="mb-2"><i class="fas fa-play-circle text-info me-2"></i>Energía solar fotovoltaica y térmica</li>
+                                        <li class="mb-2"><i class="fas fa-play-circle text-info me-2"></i>Energía eólica onshore y offshore</li>
+                                        <li class="mb-2"><i class="fas fa-play-circle text-info me-2"></i>Energía hidroeléctrica y mareomotriz</li>
+                                        <li class="mb-2"><i class="fas fa-play-circle text-info me-2"></i>Biomasa y energía geotérmica</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Módulo 3 -->
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#modulo3">
+                                    <strong>Módulo 3: Implementación Práctica</strong>
+                                </button>
+                            </h2>
+                            <div id="modulo3" class="accordion-collapse collapse" data-bs-parent="#cursoContenido">
+                                <div class="accordion-body">
+                                    <ul class="list-unstyled">
+                                        <li class="mb-2"><i class="fas fa-play-circle text-info me-2"></i>Diseño de sistemas residenciales</li>
+                                        <li class="mb-2"><i class="fas fa-play-circle text-info me-2"></i>Financiamiento y ROI de proyectos</li>
+                                        <li class="mb-2"><i class="fas fa-play-circle text-info me-2"></i>Regulaciones y políticas energéticas</li>
+                                        <li class="mb-2"><i class="fas fa-tasks text-warning me-2"></i>Proyecto final: Diseño de sistema</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Instructor -->
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-4">
+                    <h3 class="card-title h4 mb-4">👨‍🔬 Instructor del Curso</h3>
+                    <div class="row align-items-center">
+                        <div class="col-md-3 text-center">
+                            <img src="{{ url_for('static', filename='img/instructor3.jpg') }}" alt="Ing. Roberto Silva" class="rounded-circle mb-3" width="120" height="120">
+                        </div>
+                        <div class="col-md-9">
+                            <h5>Ing. Roberto Silva</h5>
+                            <p class="text-muted">Ingeniero civil con maestría en energías renovables. Ha liderado más de 50 proyectos de implementación de energías limpias en Latinoamérica y es consultor para organismos internacionales.</p>
+                            <div class="d-flex gap-3">
+                                <span class="badge bg-light text-dark"><i class="fas fa-graduation-cap me-1"></i>+12,000 estudiantes</span>
+                                <span class="badge bg-light text-dark"><i class="fas fa-star me-1"></i>4.9/5 rating</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar de Compra -->
+        <div class="col-lg-4">
+            <div class="card border-0 shadow-lg sticky-top" style="top: 20px;">
+                <div class="card-body p-4">
+                    <div class="text-center mb-4">
+                        <span class="text-decoration-line-through text-muted h5">$199.00</span>
+                        <span class="h2 text-info fw-bold ms-2">$129.00</span>
+                        <span class="badge bg-danger ms-2">35% OFF</span>
+                    </div>
+
+                    <div class="d-grid gap-2 mb-4">
+                        <a href="{{ url_for('add_to_favorites', curso_id='energias-limpias') }}" class="btn btn-outline-danger">
+    <i class="fas fa-heart me-2"></i>Agregar a Favoritos
+</a>
+<a href="{{ url_for('add_to_cart', curso_id='energias-limpias') }}" class="btn btn-success">
+    <i class="fas fa-cart-plus me-2"></i>Agregar al Carrito
+</a>
+                    </div>
+
+                    <div class="course-features">
+                        <h6 class="mb-3">✅ Este curso incluye:</h6>
+                        <ul class="list-unstyled">
+                            <li class="mb-2"><i class="fas fa-play-circle text-info me-2"></i>24 lecciones en video</li>
+                            <li class="mb-2"><i class="fas fa-file-alt text-info me-2"></i>12 recursos descargables</li>
+                            <li class="mb-2"><i class="fas fa-infinity text-info me-2"></i>Acceso de por vida</li>
+                            <li class="mb-2"><i class="fas fa-mobile-alt text-info me-2"></i>Acceso en app móvil</li>
+                            <li class="mb-2"><i class="fas fa-certificate text-info me-2"></i>Certificado profesional</li>
+                            <li class="mb-2"><i class="fas fa-briefcase text-info me-2"></i>Bolsa de trabajo exclusiva</li>
+                        </ul>
+                    </div>
+
+                    <div class="guarantee-badge text-center mt-4">
+                        <div class="bg-light rounded p-3">
+                            <i class="fas fa-shield-alt fa-2x text-info mb-2"></i>
+                            <h6 class="mb-1">Garantía de 30 días</h6>
+                            <small class="text-muted">Reembolso completo si no estás satisfecho</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de Pago (similar a los anteriores) -->
+{% endblock %}
